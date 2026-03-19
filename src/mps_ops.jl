@@ -4,6 +4,12 @@
 
 using ITensors
 
+
+
+
+
+using ITensors: sim!
+
 function _log_or_not_dot(
     M1::MPST, M2::MPST, loginner::Bool; dag=true, make_inds_match::Bool=true
 )::Number where {MPST<:ITensors.AbstractMPS}
@@ -14,7 +20,7 @@ function _log_or_not_dot(
 
     M1dag = dag ? ITensors.dag(M1) : M1
 
-    ITensors.sim_linkinds!(M1dag)
+    sim!(linkinds, M1dag)
 
     siteindsM1dag = ITensors.siteinds(all, M1dag)
     siteindsM2 = ITensors.siteinds(all, M2)
@@ -66,9 +72,6 @@ function _log_or_not_dot(
 
     return dot_M1_M2
 end
-
-
-
 
 
 
