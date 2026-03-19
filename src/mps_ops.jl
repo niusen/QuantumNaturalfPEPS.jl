@@ -6,8 +6,6 @@ using ITensors
 
 
 
-
-
 using ITensors: sim!
 
 function _log_or_not_dot(
@@ -25,9 +23,12 @@ function _log_or_not_dot(
     siteindsM1dag = ITensors.siteinds(all, M1dag)
     siteindsM2 = ITensors.siteinds(all, M2)
 
+    same_num_siteinds = length(M1) == length(M2) &&
+        all(n -> length(ITensors.siteinds(M1, n)) == length(ITensors.siteinds(M2, n)), 1:length(M1))
+
     if any(n -> length(n) > 1, siteindsM1dag) ||
        any(n -> length(n) > 1, siteindsM2) ||
-       !ITensors.hassamenuminds(ITensors.siteinds, M1, M2)
+       !same_num_siteinds
         make_inds_match = false
     end
 
@@ -72,9 +73,4 @@ function _log_or_not_dot(
 
     return dot_M1_M2
 end
-
-
-
-
-
 
